@@ -40,16 +40,16 @@ app = Flask(__name__)
 # Welcome users to the page and provide them with a list of selectable routes
 @app.route("/")
 def welcome():
-    """List all available api routes."""
-
-    return (
+    """List all available routes."""
+    return(
         f"Welcome to the Honolulu, Hawaii Weather API!<br/><br>"
         f"Available Routes:<br/>"
-        f"-- Daily Precipitation Totals (23Aug2016 - 23Aug2017): <a href=\"/api/v1.0/precipitation\">/api/v1.0/precipitation<a><br/>"
+        f"-- Daily Precipitation Totals (Aug2016 - Aug2017): <a href=\"/api/v1.0/precipitation\">/api/v1.0/precipitation<a><br/>"
         f"-- Active Weather Stations: <a href=\"/api/v1.0/stations\">/api/v1.0/stations<a><br/>"
-        f"-- Daily Temperature Observations for Station USC00519281 (23Aug2016 - 23Aug2017): <a href=\"/api/v1.0/tobs\">/api/v1.0/tobs<a><br/>"
-        f"-- Min, Average & Max Temperatures for Date Range: /api/v1.0/trip/yyyy-mm-dd/yyyy-mm-dd<br>"
-        f"NOTE: If no end-date is provided, the api will only calculate stats through 23Aug2017<br>" 
+        f"-- Daily Temperature Observations for Station USC00519281 (Aug2016 - Aug2017): <a href=\"/api/v1.0/tobs\">/api/v1.0/tobs<a><br/>"
+        f"-- To retrieve the minimum, average, and maximum temperatures for a specific start date, use /api/v1.0/'start' (replace 'start' with a date in yyyy-mm-dd format)<br/>"
+        f"-- To retrieve the minimum, average, and maximum temperatures for a specific date range, use /api/v1.0/'start'/'end' (replace 'start' and 'end' with dates in yyyy-mm-dd format)<br/>"
+        f"PLEASE NOTE: If no end-date is provided, the api will use 23Aug2017 as the end date.<br>" 
     )
 
 
@@ -98,7 +98,7 @@ def stations():
     # Close the session
     session.close()
 
-    # Convert list of tuples into normal list
+    # Convert the resulting list of tuples into a normal list
     station_listing = list(np.ravel(stations))
 
     # Return a jsonified version of the station listing
@@ -138,6 +138,67 @@ def tobs():
     return jsonify(tobs_list)
 
 
+# Define what will happen when the user appends a start date to /api/v1.0/
+@app.route("/api/v1.0/<start>")
+def temp_stats_start(start):
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    # Create an empty list to hold the query results
+    return_list = []
+
+    results = session.query(measurement.date,\
+                            func.min(measurement.tobs),\
+                            func.avg(measurement.tobs),\
+                            func.max(measurement.tobs)).\
+                            filter(measurement.date >= start).\
+                            group_by(measurement.date).all()
+    
+    for date, min, avg, max in results:
+        new_dict = {}
+        new_dict["Date"] = date
+        new_dict["TMIN"] = min
+        new_dict["TAVG"] = avg
+        new_dict["TMAX"] = max
+        return_list.append(new_dict)
+    
+    # Close the session
+    session.close()
+
+    # Return the query results jsonified
+    return jsonify(return_list)
+
+
+# Define what will happen when the user appends a start date and an end date to /api/v1.0/
+@app.route("/api/v1.0/<start>/<end>")
+def temp_stats_start_end(start, end):
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    # Create an empty list to hold the query results
+    return_list = []
+
+    results = session.query(measurement.date,\
+                            func.min(measurement.tobs),\
+                            func.avg(measurement.tobs),\
+                            func.max(measurement.tobs)).\
+                            filter(measurement.date >= start).\
+                            filter(measurement.date <= end).\
+                            group_by(measurement.date).all()
+    
+    for date, min, avg, max in results:
+        new_dict = {}
+        new_dict["Date"] = date
+        new_dict["TMIN"] = min
+        new_dict["TAVG"] = avg
+        new_dict["TMAX"] = max
+        return_list.append(new_dict)
+    
+    # Close the session
+    session.close()
+
+    # Return the query results jsonified
+    return jsonify(return_list)
 
 
 if __name__ == '__main__':
