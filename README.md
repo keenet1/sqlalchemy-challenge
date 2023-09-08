@@ -11,7 +11,7 @@ This repository contains three folders within the SurfsUp folder:
 ## Part 1: Anaysis of Climate Data
 For part 1 of the homework assignment, Python and SQLAlchemy were used to do a basic climate analysis and data exploration of a Honolulu, Hawaii climate database. The analysis was performed using SQLAlchemy ORM queries, Pandas, and Matplotlib. The results include an analysis of precipitation data along with an analysis of weather station data.
 
-## Part 2: Designing a Flask API
+## Part 2: Designing an API using Flask
 In part 2 of the homework assignment, Flask was used to create an API based on our Part 1 queries. The API welcomes the user, and then presents them with a list of the available routes to explore.
 
 ---
