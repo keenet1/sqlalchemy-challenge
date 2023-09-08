@@ -8,7 +8,7 @@ This repository contains three folders within the SurfsUp folder:
 - Resources: contains the hawaii_measurements.csv, hawaii_stations.csv, and the hawaii.sqlite database
 - Completed_Assignment: contains my completed homework files (climate_analysis.ipynb and app_completed.py)
 
-## Part 1: Anaysis of Climate Data
+## Part 1: Analysis of Climate Data
 For part 1 of the homework assignment, Python and SQLAlchemy were used to do a basic climate analysis and data exploration of a Honolulu, Hawaii climate database. The analysis was performed using SQLAlchemy ORM queries, Pandas, and Matplotlib. The results include an analysis of precipitation data along with an analysis of weather station data.
 
 ## Part 2: Designing an API using Flask
