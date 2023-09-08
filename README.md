@@ -21,7 +21,7 @@ Some coding I looked at for inspiration:
 - https://github.com/yeyanwang/sqlalchemy-challenge/tree/main
 - https://github.com/c-l-nguyen/sqlalchemy-challenge/tree/master
 
-## Acknowledgements
+## Acknowledgements:
 I wish to thank my teaching staff:
 - Hunter Hollis
 - Sam Espe
