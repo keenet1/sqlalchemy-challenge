@@ -3,7 +3,7 @@
 **Contributors:** Thomas Keene
 ---
 ## Repository Overview:
-This repository contains three folders:
+This repository contains three folders within the SurfsUp folder:
 - Starter_code: contains the starter code provided in the module exercise
 - Resources: contains the hawaii_measurements.csv, hawaii_stations.csv, and the hawaii.sqlite database
 - Completed_Assignment: contains my completed homework files (climate_analysis.ipynb and app_completed.py)
